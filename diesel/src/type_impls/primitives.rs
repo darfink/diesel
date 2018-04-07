@@ -37,6 +37,10 @@ mod foreign_impls {
 
     #[derive(FromSqlRow, AsExpression)]
     #[diesel(foreign_derive)]
+    struct U8Proxy(u8);
+
+    #[derive(FromSqlRow, AsExpression)]
+    #[diesel(foreign_derive)]
     #[cfg_attr(feature = "mysql", sql_type = "::sql_types::Unsigned<SmallInt>")]
     struct U16Proxy(u16);
 
