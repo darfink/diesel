@@ -93,3 +93,24 @@ impl ToSql<sql_types::Bool, Sqlite> for bool {
         <i32 as ToSql<sql_types::Integer, Sqlite>>::to_sql(&int_value, out)
     }
 }
+
+impl ToSql<sql_types::Integer, Sqlite> for u8 {
+    fn to_sql<W: Write>(&self, out: &mut Output<W, Sqlite>) -> serialize::Result {
+        let int_value = *self as i32;
+        <i32 as ToSql<sql_types::Integer, Sqlite>>::to_sql(&int_value, out)
+    }
+}
+
+impl ToSql<sql_types::Integer, Sqlite> for u16 {
+    fn to_sql<W: Write>(&self, out: &mut Output<W, Sqlite>) -> serialize::Result {
+        let int_value = *self as i32;
+        <i32 as ToSql<sql_types::Integer, Sqlite>>::to_sql(&int_value, out)
+    }
+}
+
+impl ToSql<sql_types::Integer, Sqlite> for u32 {
+    fn to_sql<W: Write>(&self, out: &mut Output<W, Sqlite>) -> serialize::Result {
+        let int_value = *self as i32;
+        <i32 as ToSql<sql_types::Integer, Sqlite>>::to_sql(&int_value, out)
+    }
+}
