@@ -51,7 +51,6 @@ cfg_if! {
     }
 }
 
-
 #[cfg(feature = "postgres")]
 pub fn pg_connection() -> PgConnection {
     let conn = PgConnection::establish(&pg_database_url()).unwrap();

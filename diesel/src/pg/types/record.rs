@@ -1,7 +1,7 @@
-use expression::{AsExpression, Expression, NonAggregate, SelectableExpression, AppearsOnTable};
+use expression::{AppearsOnTable, AsExpression, Expression, NonAggregate, SelectableExpression};
 use byteorder::{NetworkEndian, ReadBytesExt};
 use pg::Pg;
-use deserialize::{self, Queryable, FromSqlRow, FromSql};
+use deserialize::{self, FromSql, FromSqlRow, Queryable};
 use sql_types::Record;
 use row::Row;
 use result::QueryResult;
@@ -153,8 +153,8 @@ mod tests {
     fn record_deserializes_correctly() {
         let conn = pg_connection();
 
-        let tup = sql::<Record<(Integer, Text)>>("SELECT (1, 'hi')")
-            .get_result::<(i32, String)>(&conn);
+        let tup =
+            sql::<Record<(Integer, Text)>>("SELECT (1, 'hi')").get_result::<(i32, String)>(&conn);
         assert_eq!(Ok((1, String::from("hi"))), tup);
 
         let tup = sql::<Record<(Record<(Integer, Text)>, Integer)>>("SELECT ((2, 'bye'), 3)")
@@ -178,8 +178,16 @@ mod tests {
         let res = ::select(tup.eq(((2, "bye"), 3))).get_result(&conn);
         assert_eq!(Ok(true), res);
 
-        let tup = sql::<Record<(Record<(Nullable<Integer>, Nullable<Text>)>, Nullable<Integer>)>>("((4, NULL::text), NULL::int4)");
-        let res = ::select(tup.is_not_distinct_from(((Some(4), None::<&str>), None::<i32>))).get_result(&conn);
+        let tup = sql::<
+            Record<
+                (
+                    Record<(Nullable<Integer>, Nullable<Text>)>,
+                    Nullable<Integer>,
+                ),
+            >,
+        >("((4, NULL::text), NULL::int4)");
+        let res = ::select(tup.is_not_distinct_from(((Some(4), None::<&str>), None::<i32>)))
+            .get_result(&conn);
         assert_eq!(Ok(true), res);
     }
 }
