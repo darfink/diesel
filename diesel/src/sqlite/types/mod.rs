@@ -45,6 +45,24 @@ impl FromSql<sql_types::Integer, Sqlite> for i32 {
     }
 }
 
+impl FromSql<sql_types::Integer, Sqlite> for u8 {
+    fn from_sql(value: Option<&SqliteValue>) -> deserialize::Result<Self> {
+        Ok(not_none!(value).read_integer() as u8)
+    }
+}
+
+impl FromSql<sql_types::Integer, Sqlite> for u16 {
+    fn from_sql(value: Option<&SqliteValue>) -> deserialize::Result<Self> {
+        Ok(not_none!(value).read_integer() as u16)
+    }
+}
+
+impl FromSql<sql_types::Integer, Sqlite> for u32 {
+    fn from_sql(value: Option<&SqliteValue>) -> deserialize::Result<Self> {
+        Ok(not_none!(value).read_integer() as u32)
+    }
+}
+
 impl FromSql<sql_types::Bool, Sqlite> for bool {
     fn from_sql(value: Option<&SqliteValue>) -> deserialize::Result<Self> {
         Ok(not_none!(value).read_integer() != 0)
